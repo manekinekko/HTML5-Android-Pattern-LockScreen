@@ -1,0 +1,33 @@
+<!DOCTYPE public>
+<html lang="en">
+	<head>
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content = "width=device-width ,  user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta http-equiv="cleartype" content="on">
+	
+		<title>Android Pattern LockScreen using Canvas</title>
+		<link href='http://fonts.googleapis.com/css?family=Sansita+One' rel='stylesheet'/>
+		<link rel="stylesheet" href="android-pattern-lockScreen.css" />
+		<script src="kinetic-v3.9.8.js"></script>
+	</head>
+	<body>
+		<div id="lock-screen-container">
+			<h1>Android Pattern LockScreen</h1>
+			<div class="buttons">
+				<button id="save-pattern-button" class="button blue">
+					<span class="gray"></span>Record Pattern</button>
+				<button id="unlock-button" class="button blue">Unlock</button>
+				<button id="reset-button" class="button blue">Reset</button>
+				<br/>
+			</div>
+			<div id="lock-screen" />
+		</div>
+		<script src="android-pattern-lockScreen.Pattern.js"></script>
+		<script src="android-pattern-lockScreen.PatternLockScreen.js"></script>
+		<script src="android-pattern-lockScreen.Dot.js"></script>
+		<script src="android-pattern-lockScreen.App.js"></script>
+	</body>
+</html>
