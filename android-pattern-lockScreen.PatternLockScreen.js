@@ -5,6 +5,10 @@
  */
 function PatternLockScreen(options){
 	
+	if( window['Kinetic'] === undefined ){
+		throw "[PatternLockScreen] Kinetic.js was not detected!";
+	}
+	
 	/*
 	 * Verify the config options.
 	 */
@@ -14,6 +18,7 @@ function PatternLockScreen(options){
 	this._config.container = options.container || null;
 	this._config.onSuccess = options.onSuccess || null;
 	this._config.onFailure = options.onFailure || null;
+	this._config.pattern = options.pattern || null;
 	
 	if( this._config.container === null ){
 		throw "[PatternLockScreen] You need to specify a container!";
@@ -49,7 +54,7 @@ function PatternLockScreen(options){
 	this._pattern = new Pattern({
 		patternLayer : this._dotsOuterLayer,
 		lineLayer : this._lineLayer,
-		hintLayer : this._lineLayer,
+		hintLayer : this._hintLayer,
 	});
 	
 	/*
@@ -57,13 +62,38 @@ function PatternLockScreen(options){
 	 */
 	this._dots = [];
 	
+	this._draw();
+	
+	if( this._config.pattern !== null ){
+		this._parseAndSaveUserPattern(this._config.pattern);
+	}
+	
+};
+
+/*
+ * This method initializes the saved pattern.
+ * @todo this method need more tests!
+ */
+PatternLockScreen.prototype._parseAndSaveUserPattern = function(pattern){
+	var patternArray = pattern.split(/[#\|_,; -]+/);
+	var dotPosition;
+	for(var i=0; i<patternArray.length; i+=1){
+		dotPosition = (+patternArray[i])-1;
+		if( dotPosition >= 0 && this._dots[dotPosition] ){
+			var dot = this._dots[dotPosition];
+			if( this._pattern.shouldDrawDot(dot) ){
+				this._pattern.savePatternDot(dot);
+			}
+		}
+	};
+	this._pattern.buildHint();
 };
 
 /*
  * This method initializes and draws the container.
  * @return PatternLockScreen reference.
  */
-PatternLockScreen.prototype.draw = function(){
+PatternLockScreen.prototype._draw = function(){
 	var i;
 	var w = this._stage.getWidth();
 	var h = this._stage.getHeight();
@@ -92,7 +122,7 @@ PatternLockScreen.prototype.draw = function(){
 			x : 						points[i].x, 
 			y : 						points[i].y
 		}
-		this._dots.push(new Dot(options));
+		this._dots.push(new Dot(i, options));
 	};
 	return this;
 };
@@ -122,12 +152,12 @@ PatternLockScreen.prototype.reset = function(){
 PatternLockScreen.prototype.unlock = function(){
 	if( this._pattern.isValid() ){
 		this.validatePattern();
-		this._config.onSuccess && this._config.onSuccess();
+		this._config.onSuccess && this._config.onSuccess.call(this);
 		return true;
 	}
 	else {
 		this.invalidatePattern();
-		this._config.onFailure && this._config.onFailure();
+		this._config.onFailure && this._config.onFailure.call(this);
 		return false;
 	}
 };

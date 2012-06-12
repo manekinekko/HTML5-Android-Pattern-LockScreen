@@ -9,8 +9,13 @@
  * @constructor
  * @private
  */
-function Dot(o){
+function Dot(id, o){
 	var self = this;
+	
+	/*
+	 * The uniq id of this dot.
+	 */
+	this._id = id;
 	
 	/*
 	 * The x and y location of this dot.
@@ -89,6 +94,20 @@ function Dot(o){
 	this._dotInnerLayer.add(this._innerCircle);
 	this._dotInnerLayer.draw();
 
+};
+
+/*
+ * Get the x location of this dot.
+ */
+Dot.prototype.getX = function(){
+	return this._x;
+};
+
+/*
+ * Get the y location of this dot.
+ */
+Dot.prototype.getY = function(){
+	return this._y;
 };
 
 /*

@@ -87,8 +87,8 @@ Pattern.prototype.hideHint = function(){
  * Construct the hint layer.
  */
 Pattern.prototype.buildHint = function(){
-	line = this._newLine(this._savedPattern);
 	this._lineLayer.removeChildren();
+	var line = this._newLine(this._savedPattern);
 	this._hintLayer.add(line);
 };
 

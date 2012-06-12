@@ -1,8 +1,16 @@
 window.addEventListener('load', function() {
 	var app = new PatternLockScreen({
-		container: "lock-screen"
+		container: "lock-screen",
+		width: 400,
+		height: 400,
+		onSuccess: function(){
+			console.log('success');
+		},
+		onFailure: function(){
+			console.log('failure');
+		},
+		pattern: '1-44-4-4-5-2-7-3-9-19-3-5-8-9-2-5-'
 	});
-	var app = app.draw();
 	var unlockButton = document.getElementById('unlock-button');
 	var savePatternButton = document.getElementById('save-pattern-button');
 	var resetButton = document.getElementById('reset-button');
@@ -40,9 +48,9 @@ window.addEventListener('load', function() {
 		app.reset();
 	});
 	document.addEventListener('keyup', function(e){
-		app.showHint(showHint);
 		var code = e.keyCode || e.which;
-		if( code === 72 ){
+		if( code === 72 ){		
+			app.showHint(showHint);
 			showHint = !showHint;
 		}
 	});
