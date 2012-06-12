@@ -9,7 +9,7 @@ window.addEventListener('load', function() {
 		onFailure: function(){
 			console.log('failure');
 		},
-		pattern: '1-44-4-4-5-2-7-3-9-19-3-5-8-9-2-5-'
+		pattern: '1-2-3-4-5-6-7-8-9'
 	});
 	var unlockButton = document.getElementById('unlock-button');
 	var savePatternButton = document.getElementById('save-pattern-button');
