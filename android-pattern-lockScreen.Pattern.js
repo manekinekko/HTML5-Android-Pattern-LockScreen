@@ -1,62 +1,130 @@
+/*
+ * The Pattern class.
+ * @constructor
+ * @private
+ */
 function Pattern(o){
-	this.userDots = [];
-	this.savedPattern = [];
+
+	/*
+	 * The user's input dots.
+	 * NOTE: these dots are Kinetic.Circles objects!
+	 */
+	this._userDots = [];
+	
+	/*
+	 * The user's saved pattern's dots.
+	 * NOTE: these dots are JavaScript objects!
+	 */
+	this._savedPattern = [];
+	
+	/*
+	 * get the current mouse location.
+	 */
 	var stage = o.patternLayer.getStage();
 	var mousePos = stage.getMousePosition() || {x: stage.getWidth()/2, y: stage.getHeight()/2};
+	
+	/* 
+	 * the mouse start location.
+	 */
 	this._x0 = mousePos.x;
 	this._y0 = mousePos.y;
+	
+	/* 
+	 * the mouse end location.
+	 */
 	this._x = this._x0 ;
 	this._y = this._y0;
-	this.patternLayer = o.patternLayer;
-	this.lineLayer = o.lineLayer;
-	this.hintLayer = o.hintLayer;
-	this.isRecording = false;
-	this.toBeClearedOnNextUse = false;
+	
+	/*
+	 * Define all needed layers.
+	 */	
+	this._patternLayer = o.patternLayer;
+	this._lineLayer = o.lineLayer;
+	this._hintLayer = o.hintLayer;
+	
+	/*
+	 * A flag that tracks to recording state.
+	 */
+	this._isRecording = false;
+	
+	/*
+	 * A flag that specifies if the container should be cleared on next user's input.
+	 */
+	this._toBeClearedOnNextUse = false;
 };
+
+/*
+ * Set the "_isRecording" flag state.
+ */
 Pattern.prototype.setRecording = function(state){
-	this.isRecording = state;
+	this._isRecording = state;
 };
+
+/*
+ * Set the "_toBeClearedOnNextUse" flag state.
+ */
 Pattern.prototype.setToBeClearedOnNextUse = function(state){
-	this.toBeClearedOnNextUse = state;
+	this._toBeClearedOnNextUse = state;
 };
-Pattern.prototype.show = function(){
-	this.hintLayer.show();
-	this.hintLayer.draw();
+
+/*
+ * Show the hint layer.
+ */
+Pattern.prototype.showHint = function(){
+	this._hintLayer.show();
+	this._hintLayer.draw();
 };
-Pattern.prototype.hide = function(){
-	this.hintLayer.hide();
-	this.hintLayer.draw();
+
+/*
+ * Hide the hint layer.
+ */
+Pattern.prototype.hideHint = function(){
+	this._hintLayer.hide();
+	this._hintLayer.draw();
 };
+
+/*
+ * Construct the hint layer.
+ */
 Pattern.prototype.buildHint = function(){
-	line = this.getLine(this.savedPattern);
-	this.lineLayer.removeChildren();
-	this.hintLayer.add(line);
+	line = this._newLine(this._savedPattern);
+	this._lineLayer.removeChildren();
+	this._hintLayer.add(line);
 };
+
+/*
+ * Add a new dot to the container.
+ */
 Pattern.prototype.addDot = function(dot, config){
-	if( this.toBeClearedOnNextUse ){
+	if( this._toBeClearedOnNextUse ){
 		this.clear();
-		this.toBeClearedOnNextUse = false;
+		this._toBeClearedOnNextUse = false;
 	}
 
 	if( this.shouldDrawDot(dot) ){
 
-		if( this.isRecording ){
+		if( this._isRecording ){
 			this.savePatternDot(dot);
 		}
 		else {
 			if( this.shouldDrawDot(dot) ){
-				this.saveUserDot(dot);				
+				this.addUserDot(dot);				
 			}
 		}
 	
-		this.patternLayer.add(dot);
+		this._patternLayer.add(dot);
 		this.setTransition(dot, config);
-		this.patternLayer.draw();		
+		this._patternLayer.draw();		
 	}
 
 };
+
+/*
+ * Should the dot be drawn. This prevent adding duplicate dots.
+ * @return True if the dot should be drawn, False otherwise.
+ */
 Pattern.prototype.shouldDrawDot = function(dot){
-	var dots = this.isRecording ? this.savedPattern : this.userDots;
+	var dots = this._isRecording ? this._savedPattern : this._userDots;
 	for(var i=0; i<dots.length; i+=1){
 		var o = dots[i];
 		if( o.getX() === dot.getX() && o.getY() === dot.getY() ){
@@ -65,6 +133,10 @@ Pattern.prototype.shouldDrawDot = function(dot){
 	};
 	return true;
 };
+
+/*
+ * Set a transition animation (on dots).
+ */
 Pattern.prototype.setTransition = function(dot, config){
 	var self = this;
 	dot.transitionTo({
@@ -73,23 +145,35 @@ Pattern.prototype.setTransition = function(dot, config){
 		callback: self.drawLine()
 	});	
 };
-Pattern.prototype.saveUserDot = function(dot){		
-	this.userDots.push(dot);
+
+/*
+ * Save a new dot to the user's inputs array.
+ */
+Pattern.prototype.addUserDot = function(dot){		
+	this._userDots.push(dot);
 };
+
+/*
+ * Draw a line that connect all drawn dots.
+ */
 Pattern.prototype.drawLine = function(){
 	var line;
-	var dot1;
-	var dot2;
-	var dots = this.isRecording ? this.savedPattern : this.userDots;
+	var dots = this._isRecording ? this._savedPattern : this._userDots;
 	var l = dots.length;
 	if( l >= 2 ){
-		line = this.getLine(dots);
-		this.lineLayer.removeChildren();
-		this.lineLayer.add(line);
-		this.lineLayer.draw();
+		line = this._newLine(dots);
+		this._lineLayer.removeChildren();
+		this._lineLayer.add(line);
+		this._lineLayer.draw();
 	}
 };
-Pattern.prototype.getLine = function(dots){
+
+/*
+ * Build and return a new line.
+ * @return A Kinetic.Shape() reference.
+ * @private
+ */
+Pattern.prototype._newLine = function(dots){
 	return new Kinetic.Shape({
 		drawFunc: function() {
 			var ctx = this.getContext();
@@ -112,33 +196,49 @@ Pattern.prototype.getLine = function(dots){
 		strokeWidth: 5
 	});
 };
+
+/*
+ * Check if the user input mathes the saved pattern.
+ * @return True if the patterns matched, False otherwise.
+ */
 Pattern.prototype.isValid = function(){
-	if( this.savedPattern.length !== this.userDots.length ){
+	if( this._savedPattern.length !== this._userDots.length ){
 		return false;
 	};
-	for(var i=0; i<this.savedPattern.length; i++){
-		var savedDot = this.savedPattern[i];
-		var userDot = this.userDots[i];
+	for(var i=0; i<this._savedPattern.length; i++){
+		var savedDot = this._savedPattern[i];
+		var userDot = this._userDots[i];
 		if( savedDot.getX() !== userDot.getX() || savedDot.getY() !== userDot.getY() ){
 			return false;
 		}
 	};
 	return true;
 };
-Pattern.prototype.getDots = function(){
-	return this.userDots;
-};
+
+/*
+ * Clear the user's input and the current layers.
+ */
 Pattern.prototype.clear = function(){
-	this.clearUserDots();
-	this.clearLayers();
+	this._clearUserDots();
+	this._clearLayers();
 	return this;
 };
-Pattern.prototype.clearUserDots = function(){
-	this.userDots = [];
+
+/*
+ * Clear the user's input.
+ * @private
+ */
+Pattern.prototype._clearUserDots = function(){
+	this._userDots = [];
 };
-Pattern.prototype.clearLayers = function(){
+
+/*
+ * Clear the current layers.
+ * @private
+ */
+Pattern.prototype._clearLayers = function(){
 	var self = this;
-	var dots = this.patternLayer.getChildren();
+	var dots = this._patternLayer.getChildren();
 	var l = dots.length;
 	for(var i=0; i<l; i+=1){
 		var dot = dots[i];
@@ -147,30 +247,38 @@ Pattern.prototype.clearLayers = function(){
 			duration: 0.1,
 			callback: function(){
 				if( l-1 === i ){
-					self.patternLayer.clear();
-					self.patternLayer.removeChildren();
-					self.patternLayer.draw();
+					self._patternLayer.clear();
+					self._patternLayer.removeChildren();
+					self._patternLayer.draw();
 				}
 			}
 		});
 	};
 	
-	self.lineLayer.clear();
-	self.lineLayer.removeChildren();
-	self.lineLayer.draw();
+	self._lineLayer.clear();
+	self._lineLayer.removeChildren();
+	self._lineLayer.draw();
 	
 };
+
+/*
+ * Add a dot to the savedPattern array (durring the recording proccess).
+ */
 Pattern.prototype.savePatternDot = function(dot){
-	this.savedPattern.push({
+	this._savedPattern.push({
 		x: dot.getX(),
 		y: dot.getY(),
 		getX: function(){ return this.x; },
 		getY: function(){ return this.y; }
 	});
 };
+
+/*
+ * Clear the user's saved pattern.
+ */
 Pattern.prototype.clearSavedPattern = function(){
-	this.savedPattern = [];
-	this.hintLayer.removeChildren();
-	this.hintLayer.clear();
-	this.hintLayer.draw();
+	this._savedPattern = [];
+	this._hintLayer.removeChildren();
+	this._hintLayer.clear();
+	this._hintLayer.draw();
 };

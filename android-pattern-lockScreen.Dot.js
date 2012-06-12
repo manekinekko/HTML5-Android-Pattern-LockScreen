@@ -1,64 +1,116 @@
+/*
+ * The Dot class.
+ * This is the base class for all the circles that are drawn in the container.
+ * There are three kinds of dots:
+ * - The inner dots, those are the gray ones that are initially drawn,
+ * - The outer dots, those are the user's ones.
+ * - The listener dots, those are the invisible ones that listen for user's event
+ *
+ * @constructor
+ * @private
+ */
 function Dot(o){
 	var self = this;
-	this.x = o.x;
-	this.y = o.y;
-	this.dotInnerLayer = o.innerLayer;
-	this.listenerLayer = o.listenerLayer;
-	this.pattern = o.pattern;
 	
-	this.innerCircleRadius = 5;
-	this.strokeWidth = 4;
-	this.innerCircleFill = "rgba(255,255,255,0)";
-	this.innerCircleStroke = "#aaa";
+	/*
+	 * The x and y location of this dot.
+	 */
+	this._x = o.x;
+	this._y = o.y;
 	
-	var stage = this.dotInnerLayer.getStage();
-	var m = Math.min(
+	/*
+	 * The inner dots layer and the listener layer.
+	 */
+	this._dotInnerLayer = o.innerLayer;
+	this._listenerLayer = o.listenerLayer;
+	
+	/*
+	 * The reference to the Pattern object.
+	 */
+	this._pattern = o.pattern;
+	
+	/*
+	 * The inner dots default values.
+	 */
+	this._innerCircleRadius = 5;
+	this._innerCircleFill = "rgba(255,255,255,0)";
+	this._innerCircleStroke = "#aaa";
+	
+	/*
+	 * The stroke width value of all dots.
+	 */
+	this._strokeWidth = 4;
+	
+	var stage = this._dotInnerLayer.getStage();
+	var minDotRadius = Math.min(
 		stage.getWidth(), 
 		stage.getHeight()
 	);
-	this.outerCircleConfig = {
-		radius : m/10,
+	
+	/*
+	 * The user's dots default values.
+	 */
+	this._outerCircleConfig = {
+		radius : minDotRadius/10,
 		fill : "rgba(255,255,255,0)",
 		stroke : "lime",
 		strokeWidth : self.strokeWidth,
 	};
 
-	this.innerCircle = new Kinetic.Circle({
-		x: 						self.x,
-		y: 						self.y,
-		radius: 			self.innerCircleRadius,
-		fill: 				self.innerCircleFill,
-		stroke: 			self.innerCircleStroke,
+	/*
+	 * The inner dots reference.
+	 */
+	this._innerCircle = new Kinetic.Circle({
+		x: 						self._x,
+		y: 						self._y,
+		radius: 			self._innerCircleRadius,
+		fill: 				self._innerCircleFill,
+		stroke: 			self._innerCircleStroke,
 		strokeWidth: 	self.strokeWidth
 	});
-	this.listenerCircle = new Kinetic.Circle({
-		x: 						self.x,
-		y: 						self.y,
-		radius: 			self.outerCircleConfig.radius,
+	
+	/*
+	 * The listener dots reference.
+	 */
+	this._listenerCircle = new Kinetic.Circle({
+		x: 						self._x,
+		y: 						self._y,
+		radius: 			self._outerCircleConfig.radius,
 		fill: 				'transparent'
 	});
-	this.listenerCircle.on("mousedown mousemove touchmove", this.addOuterCircle.bind(this));
-	this.listenerCircle.on("mouseout", this.mouseout.bind(this));
-	this.listenerCircle.on("mouseup touchend", this.isValid.bind(this));
-	this.listenerLayer.add(this.listenerCircle);
-	this.dotInnerLayer.add(this.innerCircle);
-	this.dotInnerLayer.draw();
 	
-	return this;
+	/*
+	 * Define all needed listeners.
+	 */
+	this._listenerCircle.on("mousedown mousemove touchmove", this._showUserDot.bind(this));
+	this._listenerCircle.on("mouseout", this._mouseout.bind(this));
+	this._listenerCircle.on("mouseup touchend", this._isValid.bind(this));
+	this._listenerLayer.add(this._listenerCircle);
+	this._dotInnerLayer.add(this._innerCircle);
+	this._dotInnerLayer.draw();
+
 };
-Dot.prototype.isValid = function(){
-	if( this.pattern.isRecording ){
+
+/*
+ * This method is fired up on a mouse up or touch end events. It checks if the pattern has matched.
+ * @private
+ */
+Dot.prototype._isValid = function(){
+	if( this._pattern.isRecording ){
 		return;
 	}
 	
-	var event;
-	if (document.createEvent) {
-		event = document.createEvent("HTMLEvents");
-		event.initEvent("click", true, true);
-	} else {
-		event = document.createEventObject();
-		event.eventType = "click";
-	};
+	var event = (function createEvent(){
+		var event;
+		if (document.createEvent) {
+			event = document.createEvent("HTMLEvents");
+			event.initEvent("click", true, true);
+		} else {
+			event = document.createEventObject();
+			event.eventType = "click";
+		};
+		return event;
+	})();
 
 	var btn = document.getElementById('unlock-button');
 	if( btn.dispatchEvent ){
@@ -68,35 +120,54 @@ Dot.prototype.isValid = function(){
 		btn.fireEvent('on'+event.eventTye, event);
 	}
 };
-Dot.prototype.addOuterCircle = function(e) {
+
+/*
+ * This method shows the current user's input. Basically, it draws the a dot.
+ * @private
+ */
+Dot.prototype._showUserDot = function(e) {
 
 	document.body.style.cursor = 'pointer';
 
 	// hide the inner circle
-	this.innerCircle.setStrokeWidth(2);
-	this.dotInnerLayer.draw();
+	this._innerCircle.setStrokeWidth(2);
+	this._dotInnerLayer.draw();
 	
 	// add an outer circle if needed
 	var self = this;
 	var outerCircle = new Kinetic.Circle({
-		x: 						self.innerCircle.getX(),
-		y: 						self.innerCircle.getY(),
+		x: 						self._innerCircle.getX(),
+		y: 						self._innerCircle.getY(),
 		radius: 			0,
-		fill: 				self.outerCircleConfig.fill,
-		stroke: 			self.outerCircleConfig.stroke,
-		strokeWidth: 	self.outerCircleConfig.strokeWidth
+		fill: 				self._outerCircleConfig.fill,
+		stroke: 			self._outerCircleConfig.stroke,
+		strokeWidth: 	self._outerCircleConfig.strokeWidth
 	});
-	this.pattern.addDot(outerCircle, this.outerCircleConfig);
+	this._pattern.addDot(outerCircle, this._outerCircleConfig);
 		
 };
-Dot.prototype.mouseover = function() {
+
+/*
+ * This method is fired when the cursor or the user's finger passes over a dot.
+ * @private
+ */
+Dot.prototype._mouseover = function() {
 	document.body.style.cursor = 'pointer';
 };
-Dot.prototype.mouseout = function() {
+
+/*
+ * This method is fired when the cursor or the user's finger leaves a dot.
+ * @private
+ */
+Dot.prototype._mouseout = function() {
 	document.body.style.cursor = 'default';
 };
+
+/*
+ * This method clears the containers and set its dots to their initial state.
+ */
 Dot.prototype.clear = function(){
-	this.innerCircle.setFill(this.innerCircleFill);
-	this.innerCircle.setRadius(this.innerCircleRadius);
-	this.dotInnerLayer.draw();
+	this._innerCircle.setFill(this._innerCircleFill);
+	this._innerCircle.setRadius(this._innerCircleRadius);
+	this._dotInnerLayer.draw();
 };

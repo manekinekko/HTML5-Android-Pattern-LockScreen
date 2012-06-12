@@ -1,10 +1,13 @@
 window.addEventListener('load', function() {
-	var app = (new PatternLockScreen("lock-screen")).start();
+	var app = new PatternLockScreen({
+		container: "lock-screen"
+	});
+	var app = app.draw();
 	var unlockButton = document.getElementById('unlock-button');
 	var savePatternButton = document.getElementById('save-pattern-button');
 	var resetButton = document.getElementById('reset-button');
 	var showHint = true;
-	
+
 	savePatternButton.addEventListener('click', function(){
 		var span = this.getElementsByClassName('gray');
 		if( span.className==='red' ){
