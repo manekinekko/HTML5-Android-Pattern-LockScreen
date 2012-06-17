@@ -1,15 +1,22 @@
-##
-# The Dot class.
-# This is the base class for all the circles that are drawn in the container.
-# There are three kinds of dots:
-# - The inner dots, those are the gray ones that are initially drawn,
-# - The outer dots, those are the user's ones.
-# - The listener dots, those are the invisible ones that listen for user's event
-#
-# @constructor
-# @private
-#
-##
+###
+
+Android Pattern Lock Screen 
+http://cheghamwassim.com/apps/js/android-lock-screen/
+
+Copyright 2012, Wassim Chegham
+Licensed under the MIT or GPL Version 2 licenses.
+
+The Dot class.
+This is the base class for all the circles that are drawn in the container.
+There are three kinds of dots:
+- The inner dots, those are the gray ones that are initially drawn,
+- The outer dots, those are the user's ones.
+- The listener dots, those are the invisible ones that listen for user's event
+
+@constructor
+@private
+
+###
 
 class Dot 
 	

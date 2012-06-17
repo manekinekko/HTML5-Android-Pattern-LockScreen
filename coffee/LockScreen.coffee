@@ -1,10 +1,16 @@
-##
-#
-# The PatternLockScreen class.
-# @constructor
-# @public
-#
-##
+###
+
+Android Pattern Lock Screen 
+http://cheghamwassim.com/apps/js/android-lock-screen/
+
+Copyright 2012, Wassim Chegham
+Licensed under the MIT or GPL Version 2 licenses.
+
+The PatternLockScreen class.
+@constructor
+@public
+
+###
 
 class LockScreen
 
