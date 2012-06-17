@@ -2,6 +2,7 @@ body {
 	background: #181818;
 	color: #fff;
 	position: relative;
+	cursor: default;
 }
 h1 {
 	font-family: 'Sansita One', cursive;

@@ -10,6 +10,7 @@
  * @private
  */
 function Dot(id, o){
+	
 	var self = this;
 	
 	/*
