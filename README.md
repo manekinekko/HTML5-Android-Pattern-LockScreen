@@ -14,7 +14,7 @@ DISCLAIMER
 
 This project is in its Prouf of Concept stage. Please don't use it in your production app (for now!)
 
-LINCESE
+LINCENSE
 ================================
 
 Android Pattern Lock Screen 
