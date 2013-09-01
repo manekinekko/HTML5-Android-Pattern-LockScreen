@@ -41,7 +41,7 @@ function PatternLockScreen(options){
 	this._lineLayer = new Kinetic.Layer();
 	this._listenerLayer = new Kinetic.Layer();
 	this._hintLayer = new Kinetic.Layer();
-	this._hintLayer.setAlpha(0.1);
+	this._hintLayer.setOpacity(0.1);
 	this._stage.add(this._dotsInnerLayer);
 	this._stage.add(this._dotsOuterLayer);
 	this._stage.add(this._lineLayer);
@@ -103,25 +103,26 @@ PatternLockScreen.prototype._draw = function(){
 	var offsetH = Math.floor(h/3);
 	var points = [
 		{ x: mW - offsetW, 		y: mH - offsetH },
-		{ x: mW, 							y: mH - offsetH },
+		{ x: mW, 				y: mH - offsetH },
 		{ x: mW + offsetW, 		y: mH - offsetH },
 		
-		{ x: mW - offsetW, 		y: mH 					},
-		{ x: mW, 							y: mH 					},
-		{ x: mW + offsetW, 		y: mH 					},
+		{ x: mW - offsetW, 		y: mH 			},
+		{ x: mW, 				y: mH 			},
+		{ x: mW + offsetW, 		y: mH 			},
 		
 		{ x: mW - offsetW, 		y: mH + offsetH },
-		{ x: mW, 							y: mH + offsetH },
+		{ x: mW, 				y: mH + offsetH },
 		{ x: mW + offsetW, 		y: mH + offsetH },						
 	];
+	var options = {
+		pattern : 		this._pattern,
+		innerLayer : 	this._dotsInnerLayer,
+		listenerLayer : this._listenerLayer
+	};
+
 	for( i = 0; i < points.length; i+=1 ){
-		var options = {
-			pattern : 			this._pattern,
-			innerLayer : 		this._dotsInnerLayer,
-			listenerLayer : this._listenerLayer,
-			x : 						points[i].x, 
-			y : 						points[i].y
-		}
+		options.x = points[i].x; 
+		options.y = points[i].y;
 		this._dots.push(new Dot(i, options));
 	};
 	return this;
@@ -175,16 +176,20 @@ PatternLockScreen.prototype.validatePattern = function(){
 PatternLockScreen.prototype.invalidatePattern = function(){
 	var dots = this._dotsOuterLayer.getChildren();
 	var line = this._lineLayer.getChildren();
-	line[0].setFill("rgba(255,0,0,0.5)");
-	var self = this;
-	for(var i=0; i<dots.length; i+=1){
-		var dot = dots[i];
-		var radius = dot.getRadius();
-		dot.setStroke("rgba(255,0,0,0.8)");
-	};
-	this._dotsOuterLayer.draw();
-	this._lineLayer.draw();
-	this._pattern.setToBeClearedOnNextUse(true);
+
+	if(line.length > 0) {
+		line[0].setFill("rgba(255,0,0,0.5)");
+		var self = this;
+		for(var i=0; i<dots.length; i+=1){
+			var dot = dots[i];
+			var radius = dot.getRadius();
+			dot.setStroke("rgba(255,0,0,0.8)");
+		};
+		this._dotsOuterLayer.draw();
+		this._lineLayer.draw();
+		this._pattern.setToBeClearedOnNextUse(true);
+	}
+
 };
 
 /*

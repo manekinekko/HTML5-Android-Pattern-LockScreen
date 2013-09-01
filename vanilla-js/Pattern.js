@@ -139,11 +139,13 @@ Pattern.prototype.shouldDrawDot = function(dot){
  */
 Pattern.prototype.setTransition = function(dot, config){
 	var self = this;
-	dot.transitionTo({
+	var tween = new Kinetic.Tween({
+		node: dot,
 		radius: config.radius,
 		duration: 0.1,
-		callback: self.drawLine()
-	});	
+		onFinish: self.drawLine()
+  	});
+  	tween.play();
 };
 
 /*
@@ -240,12 +242,14 @@ Pattern.prototype._clearLayers = function(){
 	var self = this;
 	var dots = this._patternLayer.getChildren();
 	var l = dots.length;
+	var tween;
 	for(var i=0; i<l; i+=1){
 		var dot = dots[i];
-		dot.transitionTo({
-			radius: 0,
+		tween = new Kinetic.Tween({
+			node: dot,
 			duration: 0.1,
-			callback: function(){
+			radius: 0,
+			onFinish: function(){
 				if( l-1 === i ){
 					self._patternLayer.clear();
 					self._patternLayer.removeChildren();
@@ -253,6 +257,7 @@ Pattern.prototype._clearLayers = function(){
 				}
 			}
 		});
+		tween.play();
 	};
 	
 	self._lineLayer.clear();
