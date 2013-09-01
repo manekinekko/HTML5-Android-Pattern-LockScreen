@@ -70,7 +70,8 @@ class Dot
 					x: @_x,
 					y: @_y,
 					radius: @_outerCircleConfig.radius,
-					fill: 'transparent'
+					fill: 'transparent',
+					listening: true
 				})()
 
 		# Define all needed listeners.
@@ -82,6 +83,7 @@ class Dot
 		@_dotInnerLayer.add @_innerCircle
 
 		@_dotInnerLayer.draw()
+		@_listenerLayer.draw()
 
 
 	# Get the x location of this dot.

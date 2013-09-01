@@ -115,11 +115,14 @@ class Pattern
 	# Set a transition animation (on dots).
 	setTransition: (dot, config) ->
 
-		(=> dot.transitionTo {
-					radius: config.radius,
-					duration: 0.1,
-					callback: @drawLine.bind @
-				})()
+		(=>  tween new Kinetic.Tween {
+			node: dot,
+			radius: config.radius,
+			duration: 0.1,
+			onFinish: @drawLine.bind @
+			}
+			tween.play()
+		)()
 
 		return true
 	

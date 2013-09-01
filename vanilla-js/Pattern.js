@@ -146,6 +146,7 @@ Pattern.prototype.setTransition = function(dot, config){
 		onFinish: self.drawLine()
   	});
   	tween.play();
+  	
 };
 
 /*
