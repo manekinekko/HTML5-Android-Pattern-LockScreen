@@ -19,10 +19,10 @@ LINCENSE
 
 Android Pattern Lock Screen 
 http://cheghamwassim.com/apps/js/android-lock-screen/
-Copyright 2012, Wassim Chegham
+Copyright 2013, Wassim Chegham
 Licensed under the MIT or GPL Version 2 licenses.
 
-Copyright (C) 2011 - 2012 by Wassim Chegham
+Copyright (C) 2011 - 2013 by Wassim Chegham
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
