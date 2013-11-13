@@ -11,7 +11,8 @@
             onFailure: function(){
                 console.log('failure');
             },
-            pattern: '1-2-3-4-5-6-7-8-9'
+            // pattern: '1-2-3-4-5-6-7-8-9'
+            pattern : '8-5-2'
         });
 
         var unlockButton = document.getElementById('unlock-button');
@@ -21,6 +22,7 @@
 
         savePatternButton.addEventListener('click', function(){
             var span = this.getElementsByClassName('gray');
+            console.log(app.resultHint());
             if( span.className==='red' ){
                 this.innerHTML = '<span class="gray"></span>Record Pattern';
                 span.className = 'gray';
