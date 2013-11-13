@@ -11,8 +11,11 @@
             onFailure: function(){
                 console.log('failure');
             },
-            pattern: '1-2-3-4-5-6-7-8-9'
+            // pattern: '1-2-3-4-5-6-7-8-9'
+            pattern : '8-5-2'
         });
+
+        
 
         var unlockButton = document.getElementById('unlock-button');
         var savePatternButton = document.getElementById('save-pattern-button');
@@ -21,6 +24,7 @@
 
         savePatternButton.addEventListener('click', function(){
             var span = this.getElementsByClassName('gray');
+            console.log(app.resultHint());
             if( span.className==='red' ){
                 this.innerHTML = '<span class="gray"></span>Record Pattern';
                 span.className = 'gray';
@@ -50,6 +54,12 @@
         resetButton.addEventListener('click', function(){
             app.reset();
         });
+
+        document.getElementById('setOrg').addEventListener('click',function(){
+            var newVal = document.getElementById('testLock').value;
+            app.setInitPattern(newVal);
+        },false);
+
         document.addEventListener('keyup', function(e){
             var code = e.keyCode || e.which;
             if( code === 72 ){      

@@ -129,6 +129,45 @@ PatternLockScreen.prototype._draw = function(){
 };
 
 /*
+ * This method  is convert user's drawed dots pattern coordedt to normalize point number.
+ * @return  an array of result number.
+ */
+PatternLockScreen.prototype._convertToNum = function(dots){
+    if(!dots.length){
+        return ;
+    }
+    var i;
+    var w = this._stage.getWidth();
+    var h = this._stage.getHeight();
+    var mW = Math.floor((w/2));
+    var mH = Math.floor((h/2));
+    var offsetW = Math.floor(w/3);
+    var offsetH = Math.floor(h/3);
+    var points = [
+            [mW - offsetW, mH - offsetH].join('|'),
+            [mW , mH - offsetH].join('|'),
+            [mW + offsetW, mH - offsetH].join('|'),
+        
+            [mW - offsetW, mH].join('|'),
+            [mW, mH].join('|'),
+            [mW + offsetW, mH].join('|'),
+        
+            [mW - offsetW,mH + offsetH].join('|'),
+            [mW, mH + offsetH].join('|'),
+            [mW + offsetW, mH + offsetH].join('|')                     
+    ];
+    var result = [];
+    for( i = 0; i < dots.length; i+=1 ){
+        var p = [dots[i].x,dots[i].y].join('|');
+        if(points.indexOf(p)  > -1){
+            result.push(points.indexOf(p) + 1);
+        }
+    }
+    return result;
+}
+
+
+/*
  * This method clears both the container and the user's inputs.
  */
 PatternLockScreen.prototype.clear = function(){
@@ -222,3 +261,23 @@ PatternLockScreen.prototype.showHint = function(show){
         this._pattern.hideHint();
     }
 };
+
+/*
+* This method is to return user's draws pattern for save .
+*
+*/
+PatternLockScreen.prototype.resultHint = function(){
+    // return this._pattern._savedPattern;
+    return this._convertToNum(this._pattern._savedPattern);
+}
+
+/*
+*This method is to change init or user saved lock pattern 
+*/
+PatternLockScreen.prototype.setInitPattern  = function(dots){
+    // this._dots = [];
+    
+    // this._draw();
+    this.reset();
+    this._parseAndSaveUserPattern(dots);
+}
