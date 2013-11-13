@@ -755,6 +755,17 @@ PatternLockScreen.prototype.resultHint = function(){
     // return this._pattern._savedPattern;
     return this._convertToNum(this._pattern._savedPattern);
 }
+
+/*
+*This method is to change init or user saved lock pattern 
+*/
+PatternLockScreen.prototype.setInitPattern  = function(dots){
+    // this._dots = [];
+    
+    // this._draw();
+    this.reset();
+    this._parseAndSaveUserPattern(dots);
+}
 ;
 (function(){
     window.addEventListener('load', function() {
@@ -771,6 +782,8 @@ PatternLockScreen.prototype.resultHint = function(){
             // pattern: '1-2-3-4-5-6-7-8-9'
             pattern : '8-5-2'
         });
+
+        
 
         var unlockButton = document.getElementById('unlock-button');
         var savePatternButton = document.getElementById('save-pattern-button');
@@ -809,6 +822,12 @@ PatternLockScreen.prototype.resultHint = function(){
         resetButton.addEventListener('click', function(){
             app.reset();
         });
+
+        document.getElementById('setOrg').addEventListener('click',function(){
+            var newVal = document.getElementById('testLock').value;
+            app.setInitPattern(newVal);
+        },false);
+
         document.addEventListener('keyup', function(e){
             var code = e.keyCode || e.which;
             if( code === 72 ){      

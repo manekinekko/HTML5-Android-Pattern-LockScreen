@@ -270,3 +270,14 @@ PatternLockScreen.prototype.resultHint = function(){
     // return this._pattern._savedPattern;
     return this._convertToNum(this._pattern._savedPattern);
 }
+
+/*
+*This method is to change init or user saved lock pattern 
+*/
+PatternLockScreen.prototype.setInitPattern  = function(dots){
+    // this._dots = [];
+    
+    // this._draw();
+    this.reset();
+    this._parseAndSaveUserPattern(dots);
+}

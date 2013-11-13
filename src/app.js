@@ -15,6 +15,8 @@
             pattern : '8-5-2'
         });
 
+        
+
         var unlockButton = document.getElementById('unlock-button');
         var savePatternButton = document.getElementById('save-pattern-button');
         var resetButton = document.getElementById('reset-button');
@@ -52,6 +54,12 @@
         resetButton.addEventListener('click', function(){
             app.reset();
         });
+
+        document.getElementById('setOrg').addEventListener('click',function(){
+            var newVal = document.getElementById('testLock').value;
+            app.setInitPattern(newVal);
+        },false);
+
         document.addEventListener('keyup', function(e){
             var code = e.keyCode || e.which;
             if( code === 72 ){      
