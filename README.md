@@ -12,13 +12,12 @@ Feel free to commit patches or bugfixes. Any new ideas or notes are welcome.
 DISCLAIMER 
 ================================
 
-This project is in its Prouf of Concept stage. Please don't use it in your production app (for now!)
+This project is in its Prouf of Concept stage. Please don't use it in your production app
 
 LINCENSE
 ================================
 
 Android Pattern Lock Screen 
-http://cheghamwassim.com/apps/js/android-lock-screen/
 Copyright 2013, Wassim Chegham
 Licensed under the MIT or GPL Version 2 licenses.
 
