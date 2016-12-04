@@ -9,6 +9,10 @@ This system could be used in some login authentication. It may be extended to be
 
 Feel free to commit patches or bugfixes. Any new ideas or notes are welcome.
 
+DEMO
+===
+http://wassimchegham.com/apps/js/android-lock-screen/
+
 DISCLAIMER 
 ================================
 
