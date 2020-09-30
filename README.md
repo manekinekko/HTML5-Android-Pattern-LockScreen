@@ -7,7 +7,7 @@ This project is written in Coffee-script and the canvas manipulation is done usi
 
 This system could be used in some login authentication. It may be extended to be used as a captcha (however, this needs to be POC-ed ^^).
 
-Feel free to commit patches or bugfixes. Any new ideas or notes are welcome.
+Feel free to commit patches or bugfixes. Any new ideas or notes are heartily welcome.
 
 DEMO
 ===
@@ -16,12 +16,12 @@ http://wassimchegham.com/apps/js/android-lock-screen/
 DISCLAIMER 
 ================================
 
-This project is in its Prouf of Concept stage. Please don't use it in your production app
+This project is in its Concept stage. Please! don't use it in your production app.
 
 LINCENSE
 ================================
 
-Android Pattern Lock Screen 
+Android Pattern LockScreen 
 Copyright 2013, Wassim Chegham
 Licensed under the MIT or GPL Version 2 licenses.
 
