@@ -1,8 +1,7 @@
 # Project status
-⚠️ This project has been achived. Please check my other project: https://github.com/manekinekko/angular-screen-lock
+⚠️ This project has been archived. Please check my other project: https://github.com/manekinekko/angular-screen-lock
 
-HTML5-Android-Pattern-LockScreen
-================================
+## HTML5-Android-Pattern-LockScreen
 
 A proof of concept project illustrating the use of the Android Pattern LockScreen inside a HTML5 Canvas.
 This project is written in Coffee-script and the canvas manipulation is done using the Kinetic.js library.
@@ -21,7 +20,7 @@ DISCLAIMER
 
 This project is in its Prouf of Concept stage. Please don't use it in your production app
 
-LINCENSE
+LICENSE
 ================================
 
 Android Pattern Lock Screen 
