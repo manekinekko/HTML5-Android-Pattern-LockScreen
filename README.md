@@ -1,3 +1,6 @@
+# Project status
+⚠️ This project has been achived. Please check my other project: https://github.com/manekinekko/angular-screen-lock
+
 HTML5-Android-Pattern-LockScreen
 ================================
 
